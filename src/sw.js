@@ -1,3 +1,5 @@
+/* eslint-disable no-undef, no-underscore-dangle, no-restricted-globals */
+
 // This is the code piece that GenerateSW mode can't provide for us.
 // This code listens for the user's confirmation to update the app.
 self.addEventListener('message', (e) => {

@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-toolbar
+    <v-app-bar
       color="primary"
       app
       dark
     >
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Title</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
@@ -17,26 +17,26 @@
       <v-btn icon>
         <v-icon>more_vert</v-icon>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-snackbar
         v-model="snackWithButtons"
         :timeout="timeout"
         bottom
         left
-        class="snack"
       >
         {{ snackWithBtnText }}
         <v-spacer />
         <v-btn
           dark
-          flat
+          text
           color="#00f500"
-          @click.native="refreshApp"
+          @click.stop="refreshApp"
         >
           {{ snackBtnText }}
         </v-btn>
         <v-btn
+          dark
           icon
           @click="snackWithButtons = false"
         >
@@ -96,10 +96,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-/* Provide better right-edge spacing when using an icon button there. */
-.snack >>> .v-snack__content {
-  padding-right: 16px;
-}
-</style>
