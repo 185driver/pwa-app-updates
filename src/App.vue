@@ -18,32 +18,33 @@
         <v-icon>more_vert</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-snackbar
         v-model="snackWithButtons"
-        :timeout="timeout"
         bottom
         left
+        timeout="-1"
       >
         {{ snackWithBtnText }}
-        <v-spacer />
-        <v-btn
-          dark
-          text
-          color="#00f500"
-          @click.stop="refreshApp"
-        >
-          {{ snackBtnText }}
-        </v-btn>
-        <v-btn
-          dark
-          icon
-          @click="snackWithButtons = false"
-        >
-          <v-icon>close</v-icon>
-        </v-btn>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            text
+            color="#00f500"
+            v-bind="attrs"
+            @click.stop="refreshApp"
+          >
+            {{ snackBtnText }}
+          </v-btn>
+          <v-btn
+            icon
+            class="ml-4"
+            @click="snackWithButtons = false"
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+        </template>
       </v-snackbar>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -57,7 +58,6 @@ export default {
       snackBtnText: '',
       snackWithBtnText: '',
       snackWithButtons: false,
-      timeout: 0,
     };
   },
 
@@ -66,11 +66,13 @@ export default {
     document.addEventListener('swUpdated', this.showRefreshUI, { once: true });
 
     // Refresh all open app tabs when a new service worker is installed.
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (this.refreshing) return;
-      this.refreshing = true;
-      window.location.reload();
-    });
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (this.refreshing) return;
+        this.refreshing = true;
+        window.location.reload();
+      });
+    }
   },
 
   methods: {
